@@ -8,12 +8,16 @@ for line in sys.stdin:
         break
     meaning[words[0]] = words[1]
 
-print (meaning)
 
 for line in sys.stdin:
     word = []
     word = line.strip().split()
-    if word[0] in meaning:
-        print (meaning[word[0]])
-    else:
+    ok = False
+    for k, v in meaning.items():
+        if v == word[0]:
+            print(k)
+            ok = True
+            break
+            # print (k + " diif from " + word[0])
+    if not ok:
         print ("eh")

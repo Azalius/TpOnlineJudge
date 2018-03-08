@@ -1,37 +1,47 @@
 import sys
+from math import sqrt
 
-def isprime(n):
-    if not n & 1:
-        return False
-    for x in range(3, int(n**0.5)+1, 2):
-        if n % x == 0:
-            return False
-    return True
+def primes(n):
+        tableau = [False, False] + [True]*(n-2)
+        tableau[2::2] = [False]*((n-2)//2 + n%2) # supr. des nb pairs
+        yield 2 # 2 est un nombre premier
+        racine = int(n**0.5)
+        racine = racine + [1,0][racine%2] # pour que racine soit impair
+        i, fin, pas = 3, racine+1, 2
+        while i<fin: # on ne traite que les nb impairs
+            if tableau[i]:
+                yield i # i est un nombre premier
+                # on élimine i et ses multiples
+                tableau[i::i] = [False]*((n-i)//i + int((n-i)%i>0))
+            i += pas
+        i, fin, pas = racine, n, 2
+        while i<fin:  # on ne traite que les nb impairs
+            if tableau[i]:
+                yield i # i est un nombre premier
+            i += pas
 
+premiers = []
+for pr in primes(1000000):
+    premiers.append(pr)
 
+print(premiers)
 
 while True:
     words = int(sys.stdin.readline().strip().split()[0])
     if words == "0":
         break
-    i = 3
     found = False
-    while i < words:
-        if isprime(i):
-            j = int(words / 2.0) - 1
-            while j < words :
-                if isprime(j):
-                    if i + j == words:
-                        if found == False:
-                            found = True
-                            n1 = i
-                            n2 = j
-                        else:
-                            if n2-n1 < j-i:
-                                n1 = i
-                                n2 = j
-                j+=2
-        i+=2
+    for i in premiers:
+        for j in premiers:
+            if i + j == words:
+                if found == False:
+                    found = True
+                    n1 = i
+                    n2 = j
+                else:
+                    if n2-n1 < j-i:
+                        n1 = i
+                        n2 = j
     if not found:
         print("Conjecture fausse pour "+ str(words))
     else:

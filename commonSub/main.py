@@ -27,11 +27,11 @@ def PLS(c1, c2):
 
 
 for line in sys.stdin:
-    words = line.strip().split()
+    words = line.strip()
     if oldLine == None:
-        oldLine = words[0]
+        oldLine = words
     else:
-        Matrix = [[-1 for x in range(len(oldLine) + 1)] for y in range(len(words[0])+1)]
-        print(PLS(oldLine, words[0]))
+        Matrix = [[-1 for x in range(len(words) + 1)] for y in range(len(oldLine)+1)]
+        print(PLS(oldLine, words))
         Matrix = None
         oldLine = None
